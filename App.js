@@ -1,10 +1,10 @@
 import { StatusBar } from "expo-status-bar";
 import React, { useEffect, useState } from "react";
 import {
-  Keyboard,
   StyleSheet,
-  TouchableWithoutFeedback,
   View,
+  TouchableWithoutFeedback,
+  Keyboard,
 } from "react-native";
 import { NativeRouter, Route, Link } from "react-router-native";
 import BackgroundImage from "./components/background-image/BackgroundImage";
@@ -28,7 +28,12 @@ export default function App() {
       <DispatchContext.Provider value={setState}>
         <View style={[styles.container, GridStyles.container]}>
           <StatusBar backgroundColor="white" barStyle="light-content" />
-          <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+          <TouchableWithoutFeedback
+            onPress={() => {
+              console.log("clicked");
+              Keyboard.dismiss();
+            }}
+          >
             <BackgroundImage>
               <NativeRouter>
                 <Route path="/" component={Home} />
