@@ -5,7 +5,7 @@ import {
   StyleSheet,
   Text,
   KeyBoard,
-  TouchableWithoutFeedback,
+  TouchableWithoutFeedback
 } from "react-native";
 import InputText from "../reuseable/InputText";
 import Colors from "../../styles/Colors";
@@ -13,46 +13,85 @@ import Colors from "../../styles/Colors";
 const Login = (props) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isPassHidden, setIsPassHidden] = useState(true);
+  const textType = {
+    email: "email",
+    password: "password"
+  };
+
+  const handleInputChange = (inputType) => {
+    return function (e) {
+      if (inputType === textType.email) setEmail(e.nativeEvent.text);
+      if (inputType === textType.password) setPassword(e.nativeEvent.text);
+    };
+  };
+
+  const handleLoginSubmit = (stuff) => {
+    return function (e) {
+      //stuff
+    };
+  };
 
   return (
-    <TouchableWithoutFeedback
-      onPress={() => {
-        console.log("inLogin");
-      }}
-    >
+    <View>
       <View>
         <View>
-          <View>
-            <Text>Email</Text>
-            <InputText placeholder="email@email.com" />
-          </View>
-          <View>
-            <Text>Password</Text>
-            <InputText placeholder="**********" />
-          </View>
-        </View>
-        <View style={styles.buttonContainer}>
-          <Button title="Submit" />
-          <View style={styles.spacer} />
-          <Button
-            color={Colors.secondary}
-            title="Register"
-            onPress={() => props.register(1)}
+          <Text>Email</Text>
+          <InputText
+            keyboardType="email-address"
+            placeholder="email@email.com"
+            onChange={handleInputChange(textType.email)}
+            value={email}
           />
         </View>
+        <View>
+          <Text>Password</Text>
+          <View style={styles.displayPassContainer}>
+            <InputText
+              placeholder="**********"
+              secureTextEntry={isPassHidden}
+              onChange={handleInputChange(textType.password)}
+              value={password}
+            />
+            <View style={styles.displayPass}>
+              <Button
+                title="SHOW"
+                onPress={() => setIsPassHidden(!isPassHidden)}
+              />
+            </View>
+          </View>
+        </View>
       </View>
-    </TouchableWithoutFeedback>
+      <View style={styles.buttonContainer}>
+        <Button title="Submit" onPress={handleLoginSubmit()} />
+        <View style={styles.spacer} />
+        <Button
+          color={Colors.secondary}
+          title="Register"
+          onPress={() => props.register(1)}
+        />
+      </View>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   buttonContainer: {
     flexDirection: "row",
-    justifyContent: "center",
+    justifyContent: "center"
   },
   spacer: {
-    marginHorizontal: 3,
+    marginHorizontal: 3
   },
+  displayPassContainer: {
+    position: "relative",
+    justifyContent: "center",
+    alignContent: "space-between"
+  },
+  displayPass: {
+    position: "absolute",
+    right: 0
+  }
 });
 
 export default Login;

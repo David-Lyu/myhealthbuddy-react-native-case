@@ -4,7 +4,7 @@ import {
   Text,
   StyleSheet,
   TouchableWithoutFeedback,
-  Keyboard,
+  Keyboard
 } from "react-native";
 import Card from "../reuseable/Card";
 // import Suggestions from "./Suggestions";
@@ -29,8 +29,8 @@ const Home = (props) => {
 const styles = StyleSheet.create({
   homeContainer: {
     justifyContent: "center",
-    flex: 1,
-  },
+    flex: 1
+  }
 });
 
 export default Home;

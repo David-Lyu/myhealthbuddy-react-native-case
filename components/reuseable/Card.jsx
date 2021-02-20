@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
     shadowColor: "white",
     shadowOffset: {
       width: 5,
-      height: 2,
+      height: 2
     },
     shadowRadius: 6,
     shadowOpacity: 0.26,
@@ -28,13 +28,13 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     padding: 20,
     alignContent: "center",
-    justifyContent: "center",
+    justifyContent: "center"
   },
   cardContainer: {
     flex: 1,
     justifyContent: "center",
-    alignItems: "center",
-  },
+    alignItems: "center"
+  }
 });
 
 export default Card;
