@@ -7,7 +7,6 @@ import {
   Keyboard
 } from "react-native";
 import Card from "../reuseable/Card";
-// import Suggestions from "./Suggestions";
 import Login from "./Login";
 import Register from "./Register";
 

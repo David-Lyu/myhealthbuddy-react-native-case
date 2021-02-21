@@ -3,6 +3,7 @@ import { render } from "react-dom";
 import { View, Button, Text, TextInput, StyleSheet } from "react-native";
 import Colors from "../../styles/Colors";
 import InputText from "../reuseable/InputText";
+import { StateContext, DispatchContext } from "../../context";
 
 const Register = (props) => {
   //initialize state
@@ -19,6 +20,9 @@ const Register = (props) => {
   const [isPassHidden, setIsPassHidden] = useState(true);
   const [doesPassMatch, setDoesPassMatch] = useState(false);
 
+  //state handler
+  // const StateContext;
+
   const handleFormInputChange = (inputTag) => {
     return function (textVal) {
       const newInputState = { ...inputForm };
@@ -27,11 +31,19 @@ const Register = (props) => {
     };
   };
 
+  useEffect(() => {
+    const { confirmPass, password } = inputForm;
+    if (inputForm.password && confirmPass === password) setDoesPassMatch(true);
+    if (inputForm.confirmPass !== inputForm.password) setDoesPassMatch(false);
+  }, [inputForm.confirmPass]);
+
   /**
    * This method checks to verify password.
+   * @returns a component that matches the error.
    */
   const renderPassVerification = () => {
     if (inputForm.password === "") return null;
+    // if (inputForm.password.includes())
     if (doesPassMatch)
       return <Text style={{ color: "green" }}> Password matches </Text>;
     if (!doesPassMatch)
@@ -40,11 +52,18 @@ const Register = (props) => {
       );
   };
 
-  useEffect(() => {
-    const { confirmPass, password } = inputForm;
-    if (inputForm.password && confirmPass === password) setDoesPassMatch(true);
-    if (inputForm.confirmPass !== inputForm.password) setDoesPassMatch(false);
-  }, [inputForm.confirmPass]);
+  const handleRegisterUser = () => {
+    // check to see if there is any fields black
+    if (!doesPassMatch) return;
+    for (const key in inputForm) {
+      console.log("field is empty");
+      if (key === undefined) return;
+    }
+
+    const { firstName, lastName, email, password } = inputForm;
+
+    //need to send axios call
+  };
 
   return (
     <View>
@@ -82,7 +101,11 @@ const Register = (props) => {
       {renderPassVerification()}
 
       <View style={styles.buttonContainer}>
-        <Button title="Confirm" />
+        <Button
+          title="Confirm"
+          onPress={handleRegisterUser}
+          disabled={!setDoesPassMatch}
+        />
         <View style={styles.spacer} />
         <Button
           color={Colors.secondary}

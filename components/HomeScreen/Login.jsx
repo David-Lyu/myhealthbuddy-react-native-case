@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import InputText from "../reuseable/InputText";
 import Colors from "../../styles/Colors";
+import { StateContext, DispatchContext } from "../../context";
 
 const Login = (props) => {
   const [email, setEmail] = useState("");
@@ -34,7 +35,7 @@ const Login = (props) => {
 
   return (
     <View>
-      <View>
+      <View comment="body for input">
         <View>
           <Text>Email</Text>
           <InputText
