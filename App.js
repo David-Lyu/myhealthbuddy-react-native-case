@@ -4,9 +4,9 @@ import {
   StyleSheet,
   View,
   TouchableWithoutFeedback,
-  Keyboard,
+  Keyboard
 } from "react-native";
-import { NativeRouter, Route, Link } from "react-router-native";
+import { NativeRouter, Route, Link, Redirect } from "react-router-native";
 import BackgroundImage from "./components/background-image/BackgroundImage";
 import GridStyles from "./styles/grid";
 import Colors from "./styles/Colors";
@@ -15,7 +15,7 @@ import {
   StateContext,
   DispatchContext,
   initialState,
-  ourReducer,
+  ourReducer
 } from "./context";
 
 export default function App() {
@@ -32,10 +32,11 @@ export default function App() {
             onPress={() => {
               console.log("clicked");
               Keyboard.dismiss();
-            }}
-          >
+            }}>
             <BackgroundImage>
               <NativeRouter>
+                {/* not sure what we want to do here. Do we want a redirect or do we want conditional rendering */}
+                {/* <Route>{state.user ? : <Redirect to=""/> : <Home/>}</Route>*/}
                 <Route path="/" component={Home} />
               </NativeRouter>
             </BackgroundImage>
@@ -48,9 +49,9 @@ export default function App() {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: Colors.primary,
+    backgroundColor: Colors.primary
   },
   statusBar: {
-    backgroundColor: "white",
-  },
+    backgroundColor: "white"
+  }
 });

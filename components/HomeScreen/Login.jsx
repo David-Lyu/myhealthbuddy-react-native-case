@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import InputText from "../reuseable/InputText";
 import Colors from "../../styles/Colors";
+import HomeButtons from "./shared/HomeButtons";
 import { StateContext, DispatchContext } from "../../context";
 
 const Login = (props) => {
@@ -27,10 +28,9 @@ const Login = (props) => {
     };
   };
 
-  const handleLoginSubmit = (stuff) => {
-    return function (e) {
-      //stuff
-    };
+  const handleLoginSubmit = (e: nativeEvent) => {
+    //stuff
+    console.log("inside handleLoginSubmit");
   };
 
   return (
@@ -63,15 +63,14 @@ const Login = (props) => {
           </View>
         </View>
       </View>
-      <View style={styles.buttonContainer}>
-        <Button title="Submit" onPress={handleLoginSubmit()} />
-        <View style={styles.spacer} />
-        <Button
-          color={Colors.secondary}
-          title="Register"
-          onPress={() => props.register(1)}
-        />
-      </View>
+      <HomeButtons
+        onPressSubmit={handleLoginSubmit}
+        renderChoice={() => {
+          props.register(1);
+        }}
+        titleSubmit="Submit"
+        titleChoice="Register"
+      />
     </View>
   );
 };

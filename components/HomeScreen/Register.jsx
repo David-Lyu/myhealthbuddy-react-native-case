@@ -4,6 +4,7 @@ import { View, Button, Text, TextInput, StyleSheet } from "react-native";
 import Colors from "../../styles/Colors";
 import InputText from "../reuseable/InputText";
 import { StateContext, DispatchContext } from "../../context";
+import HomeButtons from "./shared/HomeButtons";
 
 const Register = (props) => {
   //initialize state
@@ -45,7 +46,7 @@ const Register = (props) => {
     if (inputForm.password === "") return null;
     // if (inputForm.password.includes())
     if (doesPassMatch)
-      return <Text style={{ color: "green" }}> Password matches </Text>;
+      return <Text style={{ color: Colors.success }}> Password matches </Text>;
     if (!doesPassMatch)
       return (
         <Text style={{ color: Colors.secondary }}>Password does not match</Text>
@@ -96,15 +97,13 @@ const Register = (props) => {
         secureTextEntry={isPassHidden}
         value={inputForm.confirmPass}
       />
-
       {/* This renders the password verification */}
       {renderPassVerification()}
-
-      <View style={styles.buttonContainer}>
+      {/* <View style={styles.buttonContainer}>
         <Button
           title="Confirm"
           onPress={handleRegisterUser}
-          disabled={!setDoesPassMatch}
+          disabled={!doesPassMatch}
         />
         <View style={styles.spacer} />
         <Button
@@ -112,7 +111,16 @@ const Register = (props) => {
           title="Login"
           onPress={() => props.login(0)}
         />
-      </View>
+      </View> */}
+      <HomeButtons
+        titleSubmit="Confirm"
+        titleChoice="Login"
+        onPressSubmit={handleRegisterUser}
+        renderChoice={() => {
+          props.login(0);
+        }}
+        disabled={!doesPassMatch}
+      />
     </View>
   );
 };

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -6,12 +6,14 @@ import {
   TouchableWithoutFeedback,
   Keyboard
 } from "react-native";
+import { useLocation } from "react-router";
 import Card from "../reuseable/Card";
 import Login from "./Login";
 import Register from "./Register";
 
 const Home = (props) => {
   const [renderChoice, setRenderChoice] = useState(0);
+
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
       <View style={styles.homeContainer}>
