@@ -57,8 +57,7 @@ const Register = (props) => {
     // check to see if there is any fields black
     if (!doesPassMatch) return;
     for (const key in inputForm) {
-      console.log("field is empty");
-      if (key === undefined) return;
+      if (!!inputForm[key]) return;
     }
 
     const { firstName, lastName, email, password } = inputForm;
@@ -98,20 +97,8 @@ const Register = (props) => {
         value={inputForm.confirmPass}
       />
       {/* This renders the password verification */}
-      {renderPassVerification()}
-      {/* <View style={styles.buttonContainer}>
-        <Button
-          title="Confirm"
-          onPress={handleRegisterUser}
-          disabled={!doesPassMatch}
-        />
-        <View style={styles.spacer} />
-        <Button
-          color={Colors.secondary}
-          title="Login"
-          onPress={() => props.login(0)}
-        />
-      </View> */}
+      <View style={styles.spacer}>{renderPassVerification()}</View>
+
       <HomeButtons
         titleSubmit="Confirm"
         titleChoice="Login"
@@ -126,13 +113,8 @@ const Register = (props) => {
 };
 
 const styles = StyleSheet.create({
-  buttonContainer: {
-    flexDirection: "row",
-    justifyContent: "center",
-    marginTop: 6
-  },
   spacer: {
-    marginHorizontal: 3
+    marginBottom: 5
   }
 });
 
