@@ -29,8 +29,29 @@ const Login = (props) => {
   };
 
   const handleLoginSubmit = (e: nativeEvent) => {
+    const body = {
+      email,
+      password
+    };
+    console.log(body);
     //stuff
+    const config = {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(body)
+    };
     console.log("inside handleLoginSubmit");
+    fetch("http://192.168.50.173:3000/api/v1/auth/login", config)
+      .then((res) => res.json())
+      .then((data) => console.log(data))
+      .catch((err) => console.error(err));
+    // fetch("https://pokeapi.co/api/v2/pokemon/ditto")
+    //   .then((res) => res.json())
+    //   .then((data) => console.log(data))
+    //   .catch(console.err);
   };
 
   return (
