@@ -3,9 +3,8 @@ import { View, Text, StyleSheet, Button } from "react-native";
 import Colors from "../../../styles/Colors";
 
 const HomeButtons = (props) => {
-  //title choice, title submit
-  //onPressSubmit renderChoice
-  //disabled
+  //what props need to be passed in:
+  //titleChoice, titleSubmit //onPressSubmit, renderChoice // [disabled?]
   return (
     <View style={styles.buttonContainer}>
       <Button
