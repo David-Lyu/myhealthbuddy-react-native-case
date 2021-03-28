@@ -5,7 +5,8 @@ import {
   StyleSheet,
   Text,
   KeyBoard,
-  TouchableWithoutFeedback
+  TouchableWithoutFeedback,
+  AsyncStorage
 } from "react-native";
 import InputText from "../reuseable/InputText";
 import Colors from "../../styles/Colors";
@@ -39,7 +40,7 @@ const Login = (props) => {
     };
     fetch("http://192.168.50.173:3000/api/v1/auth/login", config)
       .then((res) => res.json())
-      .then((data) => console.log(data))
+      .then((data) => AsyncStorage.setItem(data))
       .catch((err) => console.error(err));
     // fetch("https://pokeapi.co/api/v2/pokemon/ditto")
     //   .then((res) => res.json())
