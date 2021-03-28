@@ -29,21 +29,14 @@ const Login = (props) => {
   };
 
   const handleLoginSubmit = (e: nativeEvent) => {
-    const body = {
-      email,
-      password
-    };
-    console.log(body);
-    //stuff
     const config = {
       method: "POST",
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json"
       },
-      body: JSON.stringify(body)
+      body: JSON.stringify({ email, password })
     };
-    console.log("inside handleLoginSubmit");
     fetch("http://192.168.50.173:3000/api/v1/auth/login", config)
       .then((res) => res.json())
       .then((data) => console.log(data))

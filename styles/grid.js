@@ -5,13 +5,14 @@ const GridStyles = StyleSheet.create({
     alignItems: "center",
     width: "100%",
     flex: 1,
-    justifyContent: "flex-start",
+    justifyContent: "flex-start"
   },
   row: {
     alignItems: "center",
     justifyContent: "center",
-    flex: 1,
-  },
+    flexDirection: "row",
+    flex: 1
+  }
 });
 
 export default GridStyles;
