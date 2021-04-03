@@ -45,10 +45,7 @@ const Login = (props) => {
         if (data.error) {
           throw new Error("Wrong Pass");
         }
-        const setter = AsyncStorage.setItem(
-          "MyHealthBuddyToken",
-          JSON.stringify(data)
-        );
+        AsyncStorage.setItem("MyHealthBuddyToken", JSON.stringify(data));
       })
       .catch((err) => console.error(err + "error!"));
   };
