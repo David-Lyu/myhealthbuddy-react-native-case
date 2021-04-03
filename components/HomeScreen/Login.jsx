@@ -5,9 +5,10 @@ import {
   StyleSheet,
   Text,
   KeyBoard,
-  TouchableWithoutFeedback,
-  AsyncStorage
+  TouchableWithoutFeedback
 } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
 import InputText from "../reuseable/InputText";
 import Colors from "../../styles/Colors";
 import HomeButtons from "./shared/HomeButtons";
@@ -40,12 +41,16 @@ const Login = (props) => {
     };
     fetch("http://192.168.50.173:3000/api/v1/auth/login", config)
       .then((res) => res.json())
-      .then((data) => AsyncStorage.setItem(data))
-      .catch((err) => console.error(err));
-    // fetch("https://pokeapi.co/api/v2/pokemon/ditto")
-    //   .then((res) => res.json())
-    //   .then((data) => console.log(data))
-    //   .catch(console.err);
+      .then((data) => {
+        if (data.error) {
+          throw new Error("Wrong Pass");
+        }
+        const setter = AsyncStorage.setItem(
+          "MyHealthBuddyToken",
+          JSON.stringify(data)
+        );
+      })
+      .catch((err) => console.error(err + "error!"));
   };
 
   return (
@@ -86,6 +91,16 @@ const Login = (props) => {
         titleSubmit="Submit"
         titleChoice="Register"
       />
+      <View style={{ marginVertical: 3 }}>
+        <Button
+          title="didRegister"
+          onPress={async () => {
+            const jsonVal = await AsyncStorage.getItem("MyHealthBuddyToken");
+            jsonVal != null ? JSON.parse(jsonVal) : null;
+            console.log(jsonVal);
+          }}
+        />
+      </View>
     </View>
   );
 };
