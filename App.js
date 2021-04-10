@@ -19,35 +19,41 @@ import {
   ourReducer
 } from "./context";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import Login from "./components/HomeScreen/Login";
+import Register from "./components/HomeScreen/Register";
 
 export default function App() {
+  //look at context/index.js for initial state and everything
   const [state, dispatch] = useReducer(ourReducer, initialState);
+
   //working on useEffect and token to render before login page
   useEffect(() => {
     async function getToken() {
       const setter = await AsyncStorage.getItem("MyHealthBuddyToken");
-      console.log(setter);
+      if (setter) dispatch({ type: "token", value: setter });
+      console.log(setter, "already logged In");
     }
-    console.log("inside app js first render");
-    console.log(getToken());
-    console.log("end of app js first render");
+    getToken();
   }, []);
 
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar style={"light"} />
+      {/* uses useContext from context/index.js and adds the state and dispatch value from useReducer aka Redux*/}
       <StateContext.Provider value={state}>
         <DispatchContext.Provider value={dispatch}>
           <View style={[GridStyles.container]}>
             <TouchableWithoutFeedback
               onPress={() => {
-                console.log("clicked");
                 Keyboard.dismiss();
               }}>
               <BackgroundImage>
+                {/* Will be changing react router native to navigation next week */}
                 <NativeRouter>
-                  {/* not sure what we want to do here. Do we want a redirect or do we want conditional rendering */}
-                  {/* <Route>{state.user ? : <Redirect to=""/> : <Home/>}</Route>*/}
+                  {/* <Route exact path="/">
+                    {state.token ? <Redirect to="user/home" /> : <Home />}
+                  </Route>
+                  <Route path="/user/home" component={Register} /> */}
                   <Route path="/" component={Home} />
                 </NativeRouter>
               </BackgroundImage>

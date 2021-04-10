@@ -21,9 +21,6 @@ const Register = (props) => {
   const [isPassHidden, setIsPassHidden] = useState(true);
   const [doesPassMatch, setDoesPassMatch] = useState(false);
 
-  //state handler
-  // const StateContext;
-
   const handleFormInputChange = (inputTag) => {
     return function (textVal) {
       const newInputState = { ...inputForm };
@@ -61,7 +58,6 @@ const Register = (props) => {
     }
 
     const { firstName, lastName, email, password } = inputForm;
-
     //need to send axios call
   };
 

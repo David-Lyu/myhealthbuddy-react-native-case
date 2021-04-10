@@ -1,27 +1,31 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import {
   View,
   Button,
   StyleSheet,
   Text,
   KeyBoard,
-  TouchableWithoutFeedback
+  TouchableWithoutFeedback,
+  CheckBox
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import InputText from "../reuseable/InputText";
 import Colors from "../../styles/Colors";
 import HomeButtons from "./shared/HomeButtons";
-import { StateContext, DispatchContext } from "../../context";
+import { DispatchContext } from "../../context";
 
 const Login = (props) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isPassHidden, setIsPassHidden] = useState(true);
-  const textType = {
+  const [shouldSaveUser, setShouldSaveUser] = useState(false);
+  const dispatch = useContext(DispatchContext);
+
+  const textType = Object.freeze({
     email: "email",
     password: "password"
-  };
+  });
 
   const handleInputChange = (inputType) => {
     return function (e) {
@@ -42,62 +46,60 @@ const Login = (props) => {
     fetch("http://192.168.50.173:3000/api/v1/auth/login", config)
       .then((res) => res.json())
       .then((data) => {
-        if (data.error) {
-          throw new Error("Wrong Pass");
+        if (data.error) throw new Error("Wrong Pass");
+        let payload = JSON.stringify(data);
+        if (shouldSaveUser) {
+          AsyncStorage.setItem("MyHealthBuddyToken", payload);
         }
-        AsyncStorage.setItem("MyHealthBuddyToken", JSON.stringify(data));
+        dispatch({ type: "token", payload: payload });
       })
-      .catch((err) => console.error(err + "error!"));
+      .catch((err) => console.error(err + ": could not log in"));
   };
 
   return (
     <View>
-      <View comment="body for input">
-        <View>
-          <Text>Email</Text>
+      <View>
+        <Text>Email</Text>
+        <InputText
+          keyboardType="email-address"
+          placeholder="email@email.com"
+          onChange={handleInputChange(textType.email)}
+          value={email}
+        />
+        <Text>Password</Text>
+        <View style={styles.displayPassContainer}>
           <InputText
-            keyboardType="email-address"
-            placeholder="email@email.com"
-            onChange={handleInputChange(textType.email)}
-            value={email}
+            placeholder="**********"
+            secureTextEntry={isPassHidden}
+            onChange={handleInputChange(textType.password)}
+            value={password}
           />
-        </View>
-        <View>
-          <Text>Password</Text>
-          <View style={styles.displayPassContainer}>
-            <InputText
-              placeholder="**********"
-              secureTextEntry={isPassHidden}
-              onChange={handleInputChange(textType.password)}
-              value={password}
+          <View style={styles.displayPass}>
+            <Button
+              title={isPassHidden ? "SHOW" : "HIDE"}
+              onPress={() => setIsPassHidden(!isPassHidden)}
             />
-            <View style={styles.displayPass}>
-              <Button
-                title="SHOW"
-                onPress={() => setIsPassHidden(!isPassHidden)}
-              />
-            </View>
           </View>
         </View>
       </View>
+
+      <View style={styles.checkboxContainer}>
+        <CheckBox value={shouldSaveUser} onValueChange={setShouldSaveUser} />
+        <View style={{ alignSelf: "center" }}>
+          <Text>Remember me</Text>
+        </View>
+      </View>
+
       <HomeButtons
         onPressSubmit={handleLoginSubmit}
         renderChoice={() => {
           props.register(1);
         }}
-        titleSubmit="Submit"
+        titleSubmit="Login"
         titleChoice="Register"
       />
-      <View style={{ marginVertical: 3 }}>
-        <Button
-          title="didRegister"
-          onPress={async () => {
-            const jsonVal = await AsyncStorage.getItem("MyHealthBuddyToken");
-            jsonVal != null ? JSON.parse(jsonVal) : null;
-            console.log(jsonVal);
-          }}
-        />
-      </View>
+      {/* THIS IS FOR DEBUGGING  on bottom of page*/}
+      <DevButtons></DevButtons>
     </View>
   );
 };
@@ -118,7 +120,34 @@ const styles = StyleSheet.create({
   displayPass: {
     position: "absolute",
     right: 0
+  },
+  checkboxContainer: {
+    flexDirection: "row",
+    marginBottom: 3
   }
 });
+
+function DevButtons() {
+  return (
+    <View style={{ marginVertical: 3 }}>
+      <Button
+        title="didRegister"
+        onPress={async () => {
+          const jsonVal = await AsyncStorage.getItem("MyHealthBuddyToken");
+          jsonVal != null ? JSON.parse(jsonVal) : null;
+          console.log(jsonVal);
+        }}
+      />
+      <Button
+        title="Unregister"
+        onPress={async () => {
+          const jsonVal = await AsyncStorage.removeItem("MyHealthBuddyToken");
+          jsonVal != null ? JSON.parse(jsonVal) : null;
+          console.log(jsonVal);
+        }}
+      />
+    </View>
+  );
+}
 
 export default Login;

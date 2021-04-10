@@ -5,7 +5,7 @@ const StateContext = createContext();
 const DispatchContext = createContext();
 
 const initialState = {
-  loggedIn: !!AsyncStorage.getItem("MyHealthBuddyToken"),
+  token: null,
   user: {
     username: async () => {
       const username = await AsyncStorage.getItem("MyHealthBuddyUsername");
@@ -14,16 +14,13 @@ const initialState = {
   }
 };
 
-const ourReducer = (draft, action) => {
+const ourReducer = (state, action) => {
   switch (action.type) {
-    case "login":
-      draft.loggedIn = true;
-      // draft.user = action.data;
-      break;
+    case "token":
+      return { ...state, token: action.payload };
     case "logout":
-      draft.loggedIn = false;
-      draft.user = action.data;
-      break;
+      //might cause error but seems easier to replace entire object
+      return initialState;
   }
 };
 
